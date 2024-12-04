@@ -1,0 +1,17 @@
+<div
+  *ngIf="
+    formGroup.controls[field.name].invalid &&
+    (formGroup.controls[field.name].dirty ||
+      formGroup.controls[field.name].touched)
+  "
+  class="text-danger"
+>
+  <div *ngIf="formGroup.controls[field.name].hasError('required')">
+    ** {{ field.rules.required.message }}
+  </div>
+  <div *ngIf="formGroup.controls[field.name].hasError('minlength')">
+    ** {{ field.rules.minLength.message }}
+  </div>
+</div>
+
+

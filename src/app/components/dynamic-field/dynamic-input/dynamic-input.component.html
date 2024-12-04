@@ -1,0 +1,13 @@
+<div class="form-group" [formGroup]="formGroup">
+  <label [for]="field.name" class="form-label">
+    {{ field.label }}
+  </label>
+  <input
+    class="form-control"
+    [type]="field['type']"
+    [name]="field['name']"
+    [formControlName]="field['name']"
+    [value]="field['value']"
+    [placeholder]="field['placeholder'] || ''"
+  />
+</div>
