@@ -45,8 +45,8 @@ export abstract class BaseField<T = any> {
             required: () => Validators.required,
             min: (value: number) => Validators.min(value),
             max: (value: number) => Validators.max(value),
-            minLength: (value: number) => Validators.minLength(value),
-            maxLength: (value: number) => Validators.maxLength(value),
+            minlength: (value: number) => Validators.minLength(value),
+            maxlength: (value: number) => Validators.maxLength(value),
             pattern: (value: string) => Validators.pattern(value),
         };
 
@@ -81,8 +81,8 @@ export class PasswordField extends BaseField<string> {
         name: string,
         label: string,
         value: string,
+        placeholder?: string,
         rules?: TextFieldRules,
-        placeholder?: string
     ) {
         super('password', name, label, value, rules);
         this.placeholder = placeholder;
@@ -161,8 +161,8 @@ export interface BaseFieldRules {
 }
 
 export interface TextFieldRules extends BaseFieldRules {
-    minLength?: ValidationRule<number>;  // Text fields can have minLength and maxLength
-    maxLength?: ValidationRule<number>;
+    minlength?: ValidationRule<number>;  // Text fields can have minLength and maxLength
+    maxlength?: ValidationRule<number>;
     pattern?: ValidationRule<string>;    // Regex pattern for validation
 }
 

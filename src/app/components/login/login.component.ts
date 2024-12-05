@@ -13,12 +13,13 @@ export class LoginComponent {
   loginModel = [
     new TextField( 'username', 'Username','', 'Username',{
       required: { value: true, message: 'Username is required' },
-      minLength: { value: 3, message: 'Username must be at least 3 characters' },
+      minlength: { value: 5, message: 'Username must be at least 5 characters' },
+      
     }),
-    new PasswordField('password', 'Password', '',{
+    new PasswordField('password', 'Password', '', 'Password',{
       required: { value: true, message: 'Password is required' },
-      minLength: { value: 3, message: 'Password must be at least 3 characters' },
-    }, 'Password'),
+      pattern: { value: '^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$', message: 'Password should be atleast 8 characters long and should contain one number,one character and one special character' },
+    }),
   ];
 
   // Custom submit handler defined in the parent component

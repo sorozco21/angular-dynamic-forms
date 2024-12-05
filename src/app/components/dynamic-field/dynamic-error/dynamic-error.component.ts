@@ -9,16 +9,23 @@ import { FieldType, FormFieldTypes } from '../../../model/form-control.config';
   templateUrl: './dynamic-error.component.html',
   styleUrl: './dynamic-error.component.css'
 })
-export class DynamicErrorComponent implements OnInit{
+export class DynamicErrorComponent implements OnInit {
   formGroup!: FormGroup;
   @Input() field!: any;
-  formErrors: string[]=[];
 
-  constructor(private formgroupDirective: FormGroupDirective) { 
+  constructor(private formgroupDirective: FormGroupDirective) {
     // this.formGroup = this.formgroupDirective.control;
   }
 
   ngOnInit() {
     this.formGroup = this.formgroupDirective.control;
+  }
+  get errorKeys(): string[] {
+    const control = this.control;
+    return control && control.errors ? Object.keys(control.errors) : [];
+  }
+
+  get control(){
+    return this.formGroup.get(this.field?.name);
   }
 }

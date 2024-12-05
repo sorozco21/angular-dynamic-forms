@@ -37,7 +37,6 @@ export class DynamicFieldComponent implements AfterViewInit{
   }
 
   private registerDynamicField() {
-    
     this.dynamicInputContainer.clear();
     const componentInstance = this.getComponentByType(this.field.type)
     const dynamicComponent = this.dynamicInputContainer.createComponent(componentInstance)
