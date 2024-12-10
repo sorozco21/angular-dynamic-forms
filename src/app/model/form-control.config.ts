@@ -1,20 +1,17 @@
 import { ValidatorFn, FormControl, Validators } from "@angular/forms";
+import { fileSizeValidator } from "../directive/file-size-validator.directive";
 
 // Base Class
 export abstract class BaseField<T = any> {
-    // type: FieldType;        // Field type
-    // name: string;
-    // label: string;          // Field label
-    // value: T;               // Field value
-    // rules?: FieldRules;     // Validation rules (optional)
 
     constructor(
         public type: FieldType,
         public name: string,
-        public label: string,
-        public value: T,
-        public rules?: FieldRules
-      ) {}
+        public label?: string,
+        public value?: T,
+        public rules?: FieldRules,
+        // public classes?: string
+    ) { }
 
     // Validate the field based on rules
     validate(): string[] {
@@ -48,6 +45,9 @@ export abstract class BaseField<T = any> {
             minlength: (value: number) => Validators.minLength(value),
             maxlength: (value: number) => Validators.maxLength(value),
             pattern: (value: string) => Validators.pattern(value),
+            email: () => Validators.email,
+            requiredTrue: () => Validators.requiredTrue,
+            maxSize: (value: number) => fileSizeValidator(value)
         };
 
         // Iterate over each rule and add corresponding validators
@@ -69,7 +69,7 @@ export abstract class BaseField<T = any> {
 export class TextField extends BaseField<string> {
     placeholder?: string;
 
-    constructor(name:string, label: string, value: string, placeholder?: string, rules?: TextFieldRules) {
+    constructor(name: string, label: string, value: string, placeholder?: string, rules?: TextFieldRules) {
         super('text', name, label, value, rules);
         this.placeholder = placeholder;
     }
@@ -91,15 +91,15 @@ export class PasswordField extends BaseField<string> {
 
 export class NumberField extends BaseField<number> {
     placeholder?: string;
-    constructor(name:string, label: string, value: number, placeholder?: string, rules?: NumberFieldRules) {
+    constructor(name: string, label: string, value?: number, placeholder?: string, rules?: NumberFieldRules) {
         super('number', name, label, value, rules);
         this.placeholder = placeholder;
     }
 }
 
 export class DateField extends BaseField<string> {
-    constructor(name:string, label: string, value: string, rules?: DateFieldRules) {
-        super('date',name, label, value, rules);
+    constructor(name: string, label: string, value: string, rules?: DateFieldRules) {
+        super('date', name, label, value, rules);
     }
 }
 
@@ -107,13 +107,13 @@ export class SelectField extends BaseField<string> {
     options: Option[];
 
     constructor(
-        name:string,
+        name: string,
         label: string,
         value: string,
         options: Option[],
         rules?: SelectFieldRules
     ) {
-        super('select',name, label, value, rules);
+        super('select', name, label, value, rules);
         this.options = options;
     }
 }
@@ -134,7 +134,7 @@ export class RadioField extends BaseField<string> {
         options: Option[],
         rules?: RadioFieldRules
     ) {
-        super('radio',name, label, value, rules);
+        super('radio', name, label, value, rules);
         this.options = options;
     }
 }
@@ -144,9 +144,20 @@ export class TextAreaField extends BaseField<string> {
     cols?: number;
 
     constructor(name: string, label: string, value: string, rules?: TextFieldRules, rows?: number, cols?: number) {
-        super('textarea',name, label, value, rules);
+        super('textarea', name, label, value, rules);
         this.rows = rows;
         this.cols = cols;
+    }
+}
+
+
+export class FileInputField extends BaseField {
+    accept?: string; // Specifies the file types to accept (e.g., '.jpg, .png, .pdf')
+    multiple?: boolean;
+    constructor(name: string, label: string, value: any, rules: FileInputRules, accept: string, multiple: boolean) {
+        super('file', name,label,value,rules);
+        this.accept = accept;
+        this.multiple = multiple;
     }
 }
 
@@ -164,6 +175,7 @@ export interface TextFieldRules extends BaseFieldRules {
     minlength?: ValidationRule<number>;  // Text fields can have minLength and maxLength
     maxlength?: ValidationRule<number>;
     pattern?: ValidationRule<string>;    // Regex pattern for validation
+    email?: ValidationRule<boolean>
 }
 
 export interface NumberFieldRules extends BaseFieldRules {
@@ -188,11 +200,15 @@ export interface RadioFieldRules extends BaseFieldRules {
     validSelection?: ValidationRule<boolean>; // Ensures a valid radio option is selected
 }
 
+export interface FileInputRules extends BaseFieldRules {
+    maxSize?: ValidationRule<number>; // Maximum file size in bytes (optional)
+    maxFiles?: ValidationRule<number>; // Maximum number of files (for `multiple` mode)
+}
+
 export interface Option {
     label: string;
     value: string;
 }
-
 
 // Supporting Types
 export type FieldType =
@@ -204,7 +220,8 @@ export type FieldType =
     | 'checkbox'
     | 'select'
     | 'textarea'
-    | 'password';
+    | 'password'
+    | 'file';
 
 
 export type FieldRules =
@@ -215,7 +232,7 @@ export type FieldRules =
     | CheckboxFieldRules
     | RadioFieldRules;
 
-export type FormFieldTypes = TextField | PasswordField | RadioField | CheckboxField | SelectField | TextAreaField;
+export type FormFieldTypes = TextField | DateField | NumberField | PasswordField | RadioField | CheckboxField | SelectField | TextAreaField;
 
 export interface FormFieldDefinition {
     [key: string]: TextField | RadioField | CheckboxField | SelectField | TextAreaField;

@@ -3,6 +3,10 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FormFieldTypes, TextField } from '../../model/form-control.config';
 import { CommonModule } from '@angular/common';
 import { DynamicInputComponent } from "./dynamic-input/dynamic-input.component";
+import { DynamicCheckboxComponent } from './dynamic-checkbox/dynamic-checkbox.component';
+import { DynamicRadioComponent } from './dynamic-radio/dynamic-radio.component';
+import { DynamicSelectComponent } from './dynamic-select/dynamic-select.component';
+import { DynamicFileComponent } from './dynamic-file/dynamic-file.component';
 
 @Component({
   selector: 'app-dynamic-field',
@@ -29,6 +33,22 @@ export class DynamicFieldComponent implements AfterViewInit{
     {
       name: 'date',
       component: DynamicInputComponent
+    },
+    {
+      name: 'checkbox',
+      component: DynamicCheckboxComponent
+    },
+    {
+      name: 'radio',
+      component: DynamicRadioComponent
+    },
+    {
+      name: 'select',
+      component: DynamicSelectComponent
+    }, 
+    {
+      name: 'file',
+      component: DynamicFileComponent
     }
   ]
 

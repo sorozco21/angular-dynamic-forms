@@ -19,10 +19,12 @@ export class DynamicErrorComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.formgroupDirective.control;
+    console.log(this.field)
   }
   get errorKeys(): string[] {
-    const control = this.control;
-    return control && control.errors ? Object.keys(control.errors) : [];
+    let err = this.control && this.control.errors ? Object.keys(this.control.errors) : [];
+    console.log('error in error component',err)
+    return err;
   }
 
   get control(){

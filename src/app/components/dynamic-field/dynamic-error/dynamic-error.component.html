@@ -1,5 +1,6 @@
-
- <div *ngIf="control && control.errors && (control.dirty || control.touched)" class="error">
+<div
+  *ngIf="control && control.errors && (control.dirty || control.touched)"
+>
   <div *ngFor="let errorKey of errorKeys">
     <span *ngIf="control.hasError(errorKey)" class="text-danger">
       ** {{ field.rules[errorKey]?.message }}
